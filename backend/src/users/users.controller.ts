@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Logger, UnauthorizedException, NotFoundException } from '@nestjs/common';
+import { Body, Controller, Post, Logger, UnauthorizedException, HttpException, HttpStatus, } from '@nestjs/common';
 import { UsersService } from './users.service';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
@@ -38,12 +38,13 @@ export class UsersController {
                 this.logger.log("login succesful email", user.email)
                 return { message: 'Login successful' , token};
             }else{
-                throw new Error("invalid credential");
+                throw new HttpException('invalid credential', HttpStatus.UNAUTHORIZED);
             }
 
         }catch(err){
             this.logger.error("login failed email err", err.message)
-                throw new Error(err.message);
+            throw new HttpException('User does not exist', HttpStatus.CONFLICT);
+            // throw new Error(err.message);
 
         }
     }

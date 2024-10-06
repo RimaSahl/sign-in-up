@@ -30,14 +30,12 @@ const Signup = () => {
         onSubmit: async (values) => {
             try {
                 const response = await axios.post('http://localhost:3001/auth/signup', values);
-                console.log('Signed up:', response.data);
                 localStorage.setItem('token', response.data.token);
                 // Redirect to the Welcome page
                 navigate('/welcome');
 
             } catch (err) {
                 setError('Signup failed. Please try again.');
-                console.error(err);
             }
         },
     });

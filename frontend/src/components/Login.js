@@ -23,13 +23,11 @@ const Login = () => {
         onSubmit: async (values) => {
             try {
                 const response = await axios.post('http://localhost:3001/auth/login', values);
-                console.log('Logged in:', response.data);
                 localStorage.setItem('token', response.data.token);
 
                 navigate('/welcome');
             } catch (err) {
-                setError('Login failed. Please check your credentials.');
-                console.error(err);
+                setError(`Login failed. ${err.response.data.message}`);
             }
         },
     });
